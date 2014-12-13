@@ -38,6 +38,9 @@ class NoSqlManager(NamespaceManager):
         if len(parts) > 1:
             conn_params = dict(p.split('=', 1) for p in parts[1].split('&'))
 
+        if 'connection_pool' in params:
+            conn_params['connection_pool'] = params['connection_pool']
+
         host, port = url.split(':', 1)
 
         self.open_connection(host, int(port), **conn_params)
