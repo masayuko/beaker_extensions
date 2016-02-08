@@ -69,7 +69,7 @@ class RedisManager(NoSqlManager):
         if self.serializer == 'json':
             serialized_value = json.dumps(value, ensure_ascii=True)
         else:
-            serialized_value = pickle.dumps(value, 2)
+            serialized_value = pickle.dumps(value, self.pickle_protocol)
 
         if expiretime:
             self.db_conn.setex(key, expiretime, serialized_value)

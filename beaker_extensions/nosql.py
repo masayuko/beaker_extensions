@@ -29,6 +29,7 @@ class NoSqlManager(NamespaceManager):
 
         # Specify the serializer to use (pickle or json?)
         self.serializer = params.pop('serializer', 'pickle')
+        self.pickle_protocol = params.pop('pickle_protocol', -1)
 
         self._expiretime = int(expire) if expire else None
 
@@ -77,7 +78,7 @@ class NoSqlManager(NamespaceManager):
         if self.serializer == 'json':
             self.db_conn[self._format_key(key)] = json.dumps(value, ensure_ascii=True)
         else:
-            self.db_conn[self._format_key(key)] = pickle.dumps(value, 2)
+            self.db_conn[self._format_key(key)] = pickle.dumps(value, self.pickle_protocol)
 
     def __setitem__(self, key, value):
         self.set_value(key, value, self._expiretime)
